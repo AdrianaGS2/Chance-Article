@@ -20,7 +20,35 @@ init_matched_logit <- mgcv::gam(success ~ s(kick_distance) +
 
 summary(init_matched_logit)
 
-Figure_5 <- MatchedData %>%
+Iced_vs_NonIced_45 <- 
+  map_dfr(unique(MatchedData$season), 
+          function(S) {
+            
+            #Train model on the entire MatchedData
+            train_model <- gam(success ~ s(kick_distance) 
+                               + as.factor(is_iced_kick),
+                               data = MatchedData, family = "binomial")
+            
+            #Create predicted probability where input is of the form        
+            #data.frame(is_iced_kick = c(0, 0), kick_distance = c(45, 45))
+            tibble(predicted_probability = predict(train_model, 
+                                                   newdata = data.frame(is_iced_kick = c(0, 1),
+                                                                        kick_distance = c(45, 45)),
+                                                   type = "response"))
+            
+          }
+  )
+
+Decrease_in_Probability_1 = Iced_vs_NonIced_45[1,]-Iced_vs_NonIced_45[2,]
+
+init_unmatched_logit <- mgcv::gam(success ~ s(kick_distance) +
+                                    as.factor(is_iced_kick),
+                                  data = data_without_timeouts, 
+                                  family = "binomial")
+
+summary(init_unmatched_logit)
+
+Figure_6 <- MatchedData %>%
   mutate(predProb = init_matched_logit$fitted.values) %>%
   ggplot(aes(x = kick_distance)) + 
   geom_line(aes(y = predProb, color = as.factor(is_iced_kick)),
