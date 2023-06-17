@@ -37,7 +37,7 @@ Iced_vs_NonIced_45 <-
                                                    type = "response"))
             
           }
-  )
+   )
 
 Decrease_in_Probability_1 = Iced_vs_NonIced_45[1,]-Iced_vs_NonIced_45[2,]
 
