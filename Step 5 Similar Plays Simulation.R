@@ -38,7 +38,7 @@ post_play_kick_distance <- similar_plays %>%
                               FG_DISTANCE),
          is_iced_kick = 0)
 
-## Fit the matched data model 
+# Fit the matched data model 
 
 matched_data_model <- gam(success ~ s(kick_distance) + as.factor(is_iced_kick),
                           data = MatchedData, family = "binomial")
