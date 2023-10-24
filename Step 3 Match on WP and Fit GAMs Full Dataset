@@ -11,6 +11,15 @@ MatchedData <- match.data(wp_match)
 
 table(MatchedData$is_iced_kick)
 
+Figure_5 <- MatchedData %>%
+  ggplot(aes(x = wp)) +
+  geom_density(aes(color = as.factor(is_iced_kick))) +
+  labs(x = "Win Probability", y = "Density") +
+  theme_bw() +
+  theme(legend.position = "bottom") +
+  ggthemes::scale_color_colorblind(labels = c("No","Yes")) +
+  labs(colour = "Iced Kick?")
+
 ## Fit GAMs
 
 init_matched_logit <- mgcv::gam(success ~ s(kick_distance) +
@@ -37,9 +46,9 @@ Iced_vs_NonIced_45 <-
                                                    type = "response"))
             
           }
-   )
+  )
 
-Decrease_in_Probability_1 = Iced_vs_NonIced_45[1,]-Iced_vs_NonIced_45[2,]
+Decrease_in_Probability = Iced_vs_NonIced_45[1,]-Iced_vs_NonIced_45[2,]
 
 init_unmatched_logit <- mgcv::gam(success ~ s(kick_distance) +
                                     as.factor(is_iced_kick),
