@@ -5,7 +5,7 @@ table(data_without_timeouts$is_iced_kick)
 year <- as.list(data_without_timeouts$game_id) %>%
   str_extract("[:digit:]{4}")
 
-year <- data.frame(year)
+year <- data.frame(year) 
 
 year$year <- as.numeric(year$year)
 
