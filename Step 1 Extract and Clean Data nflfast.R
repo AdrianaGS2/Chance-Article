@@ -1,7 +1,7 @@
 ## Load libraries
 
 library(tidyverse)
-library(ggrepel)
+library(ggrepel) 
 library(ggimage)
 library(nflfastR)
 library(dplyr)
