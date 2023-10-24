@@ -1,0 +1,34 @@
+## Create new dataset with only last 2 minutes
+
+last_2_minutes <- data_without_timeouts %>%
+  filter(minute <= 2)
+
+## Run matching on WP on last_2_minutes dataset
+
+wp_match_last_2_minutes <- matchit(is_iced_kick ~ wp,
+                                data = last_2_minutes,
+                                method = "nearest",
+                                distance = "mahalanobis",
+                                replace = FALSE,
+                                ratio = 4)
+
+MatchedData_last_2_minutes_wp <- match.data(wp_match_last_2_minutes)
+
+table(MatchedData_last_2_minutes_wp$is_iced_kick)
+
+## Fit GAMs
+
+init_unmatched_logit_last_2_minutes_wp <- mgcv::gam(success ~ s(kick_distance) +
+                                                      as.factor(is_iced_kick),
+                                                    data = last_2_minutes, 
+                                                    family = "binomial")
+
+summary(init_unmatched_logit_last_2_minutes_wp)
+
+
+init_matched_logit_last_2_minutes_wp <- mgcv::gam(success ~ s(kick_distance) +
+                                                    as.factor(is_iced_kick),
+                                                  data = MatchedData_last_2_minutes_wp,
+                                                  family = "binomial")
+
+summary(init_matched_logit_last_2_minutes_wp)
