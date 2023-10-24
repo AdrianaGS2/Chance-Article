@@ -42,4 +42,3 @@ Clean_Data$kicker_id_season <- paste(Clean_Data$kicker_player_id,
 
 data_without_timeouts <- Clean_Data %>%
   filter(play_type == "field_goal")
-
